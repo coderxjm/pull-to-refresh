@@ -1,5 +1,5 @@
 "Pull to refresh" = "Pull to refresh";
-"Release to refresh" = "Release to refresh";
-"Loading..." = "Loading...";
+"Release to refresh" = "松开刷新";
+"Loading..." = "加载中...";
 "Loading more" = "Loading more";
-"No more data" = "No more data";
+"No more data" = "已加载到底";
