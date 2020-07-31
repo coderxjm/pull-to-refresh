@@ -27,9 +27,9 @@ import UIKit
 
 open class ESRefreshFooterAnimator: UIView, ESRefreshProtocol, ESRefreshAnimatorProtocol {
 
-    open var loadingMoreDescription: String = NSLocalizedString("Loading more", comment: "")
-    open var noMoreDataDescription: String  = NSLocalizedString("No more data", comment: "")
-    open var loadingDescription: String     = NSLocalizedString("Loading...", comment: "")
+    open var loadingMoreDescription: String = NSLocalizedString("", comment: "")
+    open var noMoreDataDescription: String  = NSLocalizedString("已加载到底", comment: "")
+    open var loadingDescription: String     = NSLocalizedString("", comment: "")
 
     open var view: UIView { return self }
     open var duration: TimeInterval = 0.3
@@ -51,11 +51,25 @@ open class ESRefreshFooterAnimator: UIView, ESRefreshProtocol, ESRefreshAnimator
         indicatorView.isHidden = true
         return indicatorView
     }()
+    fileprivate let leftLineView: UIView = {
+        let lv = UIView(frame: CGRect(x: 0, y: 0, width: 50, height: 1))
+        lv.backgroundColor = UIColor(red: 151/255.0, green: 151/255.0, blue: 151/255.0, alpha: 1)
+        return lv
+    }()
+    
+    fileprivate let rightLineView: UIView = {
+        let lv = UIView(frame: CGRect(x: 0, y: 0, width: 50, height: 1))
+        lv.backgroundColor = UIColor(red: 151/255.0, green: 151/255.0, blue: 151/255.0, alpha: 1)
+        return lv
+    }()
+    
     
     public override init(frame: CGRect) {
         super.init(frame: frame)
         titleLabel.text = loadingMoreDescription
         addSubview(titleLabel)
+        addSubview(leftLineView)
+        addSubview(rightLineView)
         addSubview(indicatorView)
     }
     
@@ -67,12 +81,16 @@ open class ESRefreshFooterAnimator: UIView, ESRefreshProtocol, ESRefreshAnimator
         indicatorView.startAnimating()
         titleLabel.text = loadingDescription
         indicatorView.isHidden = false
+        leftLineView.isHidden = true
+        rightLineView.isHidden = true
     }
     
     open func refreshAnimationEnd(view: ESRefreshComponent) {
         indicatorView.stopAnimating()
         titleLabel.text = loadingMoreDescription
         indicatorView.isHidden = true
+        leftLineView.isHidden = false
+        rightLineView.isHidden = false
     }
     
     open func refresh(view: ESRefreshComponent, progressDidChange progress: CGFloat) {
@@ -110,5 +128,9 @@ open class ESRefreshFooterAnimator: UIView, ESRefreshProtocol, ESRefreshAnimator
         titleLabel.sizeToFit()
         titleLabel.center = CGPoint.init(x: w / 2.0, y: h / 2.0 - 5.0)
         indicatorView.center = CGPoint.init(x: titleLabel.frame.origin.x - 18.0, y: titleLabel.center.y)
+        leftLineView.frame.origin.x = titleLabel.frame.origin.x - 16 - leftLineView.bounds.size.width
+        leftLineView.center.y = titleLabel.center.y
+        rightLineView.frame.origin.x = titleLabel.frame.maxX + 16
+        rightLineView.center.y = titleLabel.center.y
     }
 }
